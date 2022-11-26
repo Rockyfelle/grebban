@@ -11,14 +11,14 @@ class GrebbanController extends Controller
 	{
 
 		// Download Raw Products
-		$client = new Client();
-		$res = $client->get('http://draft.grebban.com/backend/products.json');
-		$rawProducts = json_decode($res->getBody());
+		$productClient = new Client();
+		$productRes = $productClient->get('http://draft.grebban.com/backend/products.json');
+		$rawProducts = json_decode($productRes->getBody());
 
 		// Download Raw Categories
-		$client2 = new Client();
-		$res2 = $client2->get('http://draft.grebban.com/backend/attribute_meta.json');
-		$rawCategories = json_decode($res2->getBody());
+		$metaClient = new Client();
+		$metaRes = $metaClient->get('http://draft.grebban.com/backend/attribute_meta.json');
+		$rawCategories = json_decode($metaRes->getBody());
 
 		// Parse Categories
 		$categoriesParsed = [];
@@ -56,7 +56,6 @@ class GrebbanController extends Controller
 		$productsParsed = [];
 		foreach ($rawProducts as $product) {
 			$attributes = [];
-
 			$rawColors = explode(',', $product->attributes->color??'');
 			if ($rawColors[0] !== '') for ($i = 0; $i < count($rawColors); $i++) {
 				$attributes[] = [
